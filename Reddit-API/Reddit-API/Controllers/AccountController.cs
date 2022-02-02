@@ -33,5 +33,21 @@ namespace Reddit_API.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            var user = new ApplicationsUser { UserName = model.UserName, Email = model.Email };
+            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+            
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                return View();
+            }
+        }
     }
 }
