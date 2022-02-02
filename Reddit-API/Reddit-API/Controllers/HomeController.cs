@@ -10,28 +10,28 @@ using System.Threading.Tasks;
 namespace Reddit_API.Controllers
 {
     public class HomeController : Controller
-    {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
+    {   
+        private DbContext db = new DbContext();
         public IActionResult Index()
         {
-            return View();
+            return View(db.Topics.ToList());
         }
-
-        public IActionResult Privacy()
+        
+        public IActionResult Create()
         {
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpPost]
+        public IActionResult Create(Topic topic)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            if (!ModelState.IsValid)
+            {
+                db.Topics.Add(topic);
+                return RedirectToAction();
+            }
+            return View(topic);
+
         }
     }
 }
