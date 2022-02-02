@@ -49,5 +49,19 @@ namespace Reddit_API.Controllers
                 return View();
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            var result = await _signInManager.PasswordSignInAsync( model.UserName, model.Password, isPersistent: true , lockoutOnFailure: false);
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return View();
+            }
+        }
     }
 }
