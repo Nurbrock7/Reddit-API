@@ -15,12 +15,15 @@ namespace Reddit_API.Controllers
         public IActionResult Index(int id)
         {
             var model = new PostViewModel();
+            model.topic = db.Topics.FirstOrDefault(topic => topic.TopicId == id);
+            model.Posts = db.Posts.Include(posts => posts.TopicId).Where(topics => topics.TopicId == id).ToList();
             return View(model);
         }
 
         [Authorize]
         public IActionResult Create()
         {
+            ViewBag.TopicId = new SelectList(db.Topics, "TopicId", "Name");
             return View();
         }
 
@@ -28,6 +31,7 @@ namespace Reddit_API.Controllers
         public IActionResult Create(Post post)
         {
             db.Posts.Add(post);
+            db.SaveChanges();
             return RedirectToAction("Create");
         }
     }

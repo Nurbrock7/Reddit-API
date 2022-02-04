@@ -28,6 +28,7 @@ namespace Reddit_API.Controllers
             if (!ModelState.IsValid)
             {
                 db.Topics.Add(topic);
+                db.SaveChanges();
                 return RedirectToAction();
             }
             return View(topic);

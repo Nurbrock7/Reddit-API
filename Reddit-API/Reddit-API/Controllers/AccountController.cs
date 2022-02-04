@@ -39,10 +39,10 @@ namespace Reddit_API.Controllers
         {
             var user = new ApplicationsUser { UserName = model.UserName, Email = model.Email };
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
-            
+            Microsoft.AspNetCore.Identity.SignInResult result1 = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: true, lockoutOnFailure: false);
             if (result.Succeeded)
             {
-                return Ok();
+                return RedirectToAction("Index", "Account");
             }
             else
             {
@@ -53,10 +53,10 @@ namespace Reddit_API.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            var result = await _signInManager.PasswordSignInAsync( model.UserName, model.Password, isPersistent: true , lockoutOnFailure: false);
+            Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: true, lockoutOnFailure: false);
             if (result.Succeeded)
             {
-                return Ok(result);
+                return RedirectToAction("Index", "Home");
             }
             else
             {

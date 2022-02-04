@@ -1,6 +1,6 @@
 ﻿namespace Reddit_API.Models
 {
-    public class Comment
+    public class comment
     {
         public int CommentId { get; set; }
         public string Text { get; set; }
